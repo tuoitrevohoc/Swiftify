@@ -37,9 +37,9 @@ class PromiseTests: XCTestCase {
         let promise = Promise<String>({ resolve, reject in
             reject(TestError.executeError)
         })
-            .onError({ error in
-                expectation.fulfill()
-            })
+        .onError({ error in
+            expectation.fulfill()
+        })
         
         promise.execute();
         wait(for: [expectation], timeout: 1.0)
