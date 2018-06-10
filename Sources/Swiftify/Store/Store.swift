@@ -9,7 +9,7 @@ import Foundation
 
 /// An object that hold a state and handle all state changes
 /// State should be codable so that it's able to store to database | local file
-public class Store<State, Action>: Observable<State> {
+public class Store<State: Equatable, Action>: Observable<State> {
     
     /// Store handler, which receive the old state and action, calculate the next state
     public typealias Handler = (State, Action) -> State
@@ -35,8 +35,13 @@ public class Store<State, Action>: Observable<State> {
     ///
     /// - Parameter action: the action to call
     public func dispatch(action: Action) {
-        state = handler(state, action)
-        next(state)
+        let newState = handler(state, action)
+        
+        // if new state is different then invoke the event
+        if newState != state {
+            state = newState
+            next(state)
+        }
     }
     
 }
