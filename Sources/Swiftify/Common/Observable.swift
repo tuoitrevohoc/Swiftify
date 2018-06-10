@@ -58,6 +58,8 @@ public class Observable<Event>: ObservableType {
     ///
     /// - Parameter event: the incoming event
     public func next(_ event: Event) {
-        listeners.values.forEach({ $0(event) })
+        DispatchQueue.main.async {
+            self.listeners.values.forEach({ $0(event) })
+        }
     }
 }
